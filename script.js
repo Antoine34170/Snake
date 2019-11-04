@@ -1,12 +1,10 @@
 window.onload = function()
 {
     var canvasWidth = 900;
-    var canvasWidth = 600;
+    var canvasHeight = 600;
     var blocSize = 30;
     var ctx;
     var delay = 1000;
-    var xCoord = 0;
-    var yCoord = 0;
     var snakee;
     
     init();
@@ -19,20 +17,23 @@ window.onload = function()
         canvas.style.border = "1px solid" ;
         document.body.appendChild(canvas);
         ctx = canvas.getContext('2d');
-        snakee = new Snake([[6,4],[5,4],[4,4]]);
+        snakee = new Snake([[3,4],[4,4],[6,4]]);
         refreshCanvas();
-        
-        
     }
     
     function refreshCanvas()
     {
-        xCoord += 5;
-        yCoord += 5;
-        ctx.clearRect(0,0,canvasWidth, canvasWidth);
-        ctx.fillStyle = "#ff0000";
-        ctx.fillRect(30 ,30 ,100, 50);  
+      
+        ctx.clearRect(0,0,canvasWidth, canvasHeight);
+        snakee.draw(); 
         setTimeout(refreshCanvas,delay);
+    }
+    
+    function drawBlock(ctx, position)
+    {
+        var x = position[0] * blocSize;
+        var y = position[1] * blocSize;
+        ctx.fillRect(x,y, blocSize, blocSize)
     }
     
 function Snake(body)
@@ -49,7 +50,9 @@ function Snake(body)
             }
             ctx.restore();
         }
+        this.advance = function()
     }
+    
     
     
 }
