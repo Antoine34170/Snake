@@ -4,16 +4,14 @@ window.onload = function()
     var canvasHeight = 600;
     var blocSize = 30;
     var ctx;
-    var delay = 100;
+    var delay = 1000;
     var snakee;
     var applee;
     var widthInBlocks = canvasWidth/blocSize;
     var HeightInBlocks = canvasHeight/blocSize;
-   
-    
-   
-    
-    
+    var xCoord = parseInt(Math.random() * canvasWidth / blocSize) ;
+    var yCoord = parseInt(Math.random() * canvasHeight / blocSize) ;
+
         
     init();
     
@@ -28,11 +26,10 @@ window.onload = function()
         
         //declaration serpent + la pomme en coord aléatoire
         snakee = new Snake([[6,4],[5,4],[4,4]], "right");
-        applee = new Apple([10,10]);
+        applee = new Apple([xCoord,yCoord]);
         
          //déclaration des coord aléatoire de la pomme en debut de game
-        xCoord = parseInt(Math.random(canvasWidth) * canvasWidth) ;
-        yCoord = parseInt(Math.random(canvasHeight) * canvasHeight) ;
+        
         /*console.log("x : " + xCoord +" et y vaut " + yCoord);*/
         refreshCanvas();
     }
@@ -60,12 +57,12 @@ window.onload = function()
         var y = position[1] * blocSize;
         ctx.fillRect(x,y, blocSize, blocSize)
     }
-// SERPENT    
+// SERPENT    ----------------------------------------------------
 function Snake(body,direction)
     {
         this.body = body;
         this.direction = direction;
-        //CODAGE DU REMPLISSAGE DU SNAKE + COULEUR
+        //CODAGE DU REMPLISSAGE DU SNAKE + COULEUR--------
         this.draw = function()
         {
             ctx.save();
@@ -77,12 +74,15 @@ function Snake(body,direction)
             }
             ctx.restore();
         }
-        // CODAGE DU MOUVEMENT DU SNAKE
+        // CODAGE DU MOUVEMENT DU SNAKE-------------------
         this.advance = function()
         {
+            var snakeOnApple = false;
+            
             var nextPosition = this.body[0].slice();
+            snakeOnApple = nextPosition[0] == xCoord && nextPosition[1] == yCoord;
             switch(this.direction)
-                {
+            {
                     case "left": 
                         nextPosition[0] -= 1;
                         break;   
@@ -97,11 +97,23 @@ function Snake(body,direction)
                         break; 
                     default:
                         throw("Invalid Direction");
-                }
+            }
             this.body.unshift(nextPosition);
-            this.body.pop();
+            if (snakeOnApple)
+                {
+                    
+                }
+            else
+                {
+                   this.body.pop(); 
+                }
+            console.log(snakeOnApple);
+            
+            
+            console.log("x : "+nextPosition[0]+"y : "+nextPosition[1]);
+            
         };
-        //CODAGE DIRECTION + TEST SAISIE
+        //CODAGE DIRECTION + TEST SAISIE--------------------
         this.setDirection = function(newDirection)
         {
             var allowedDirection;
@@ -129,7 +141,7 @@ function Snake(body,direction)
                 
         };
         
-        // TEST DE COLLISION MUR + SNAKE
+        // TEST DE COLLISION MUR + SNAKE-------------
         this.checkCollision = function()
         {
             var wallCollision = false;
@@ -158,8 +170,11 @@ function Snake(body,direction)
             }
         return wallCollision || snakeCollision;
         };
-    }   
-    //LA POMME
+    }  
+    
+    
+    
+    //LA POMME --------------------------------------------
     function Apple(position)
     {
         this.position = position;
@@ -175,9 +190,10 @@ function Snake(body,direction)
             ctx.fill();
             ctx.restore();
         }
-    }
+        
+    }   
 
-    
+// TRANSMISSION INFO TOUCHE > JEU    
     document.onkeydown = function handleKeyDown(e)
     {
         var key = e.keyCode
