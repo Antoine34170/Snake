@@ -4,7 +4,7 @@ window.onload = function()
     var canvasHeight = 600;
     var blocSize = 30;
     var ctx;
-    var delay = 1000;
+    var delay = 200;
     var snakee;
     var applee;
     var widthInBlocks = canvasWidth/blocSize;
@@ -101,7 +101,11 @@ function Snake(body,direction)
             this.body.unshift(nextPosition);
             if (snakeOnApple)
                 {
+                    xCoord = parseInt(Math.random() * canvasWidth / blocSize) ;
+                    yCoord = parseInt(Math.random() * canvasHeight / blocSize) ;
+                    applee = new Apple([xCoord,yCoord]);
                     
+                   
                 }
             else
                 {
