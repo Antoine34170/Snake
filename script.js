@@ -37,6 +37,8 @@ window.onload = function()
     function refreshCanvas()
     {
         snakee.advance();
+        snakee.isEatingApple();
+        
         if (snakee.checkCollision())
         {
             gameOver();
@@ -60,13 +62,19 @@ window.onload = function()
         ctx.restore();
         
     }
-    
+    // RESTART ----------------------
     function restart()
     {
         snakee = new Snake([[6,4],[5,4],[4,4]], "right");
         applee = new Apple([xCoord,yCoord]);
         refreshCanvas();
     }
+    
+    function score()
+     {
+         var score = 0
+     }   
+        
     
     // CODAGE REMPLISSAGE CARRE
     function drawBlock(ctx, position)
@@ -91,14 +99,18 @@ function Snake(body,direction)
                 
             }
             ctx.restore();
-        }
+        };
+        // CODAGE APPLE TO EAT
+        this.isEatingApple = function()
+        {
+            var head = this.body[0];
+            var mustEatApple = head[0] == xCoord && head[1] == yCoord;
+           return(mustEatApple);
+        };
         // CODAGE DU MOUVEMENT DU SNAKE-------------------
         this.advance = function()
         {
-            var snakeOnApple = false;
-            
             var nextPosition = this.body[0].slice();
-            snakeOnApple = nextPosition[0] == xCoord && nextPosition[1] == yCoord;
             switch(this.direction)
             {
                     case "left": 
@@ -116,22 +128,20 @@ function Snake(body,direction)
                     default:
                         throw("Invalid Direction");
             }
+           
             this.body.unshift(nextPosition);
-            if (snakeOnApple)
-                {
-                    xCoord = parseInt(Math.random() * canvasWidth / blocSize) ;
-                    yCoord = parseInt(Math.random() * canvasHeight / blocSize) ;
-                    applee = new Apple([xCoord,yCoord]);
-                    
-                   
-                }
+            if (this.isEatingApple())
+            {
+                console.log("on est ds la boucle baby");
+                xCoord = parseInt(Math.random() * canvasWidth / blocSize) ;
+                yCoord = parseInt(Math.random() * canvasHeight / blocSize) ;
+                applee = new Apple([xCoord,yCoord]);
+                
+            }
             else
-                {
-                   this.body.pop(); 
-                }
-            console.log(snakeOnApple);
-            
-            
+            {
+                this.body.pop();
+            }
             console.log("x : "+nextPosition[0]+"y : "+nextPosition[1]);
             
         };
