@@ -4,7 +4,7 @@ window.onload = function()
     var canvasHeight = 600;
     var blocSize = 30;
     var ctx;
-    var delay = 200;
+    var delay = 100;
     var snakee;
     var applee;
     var widthInBlocks = canvasWidth/blocSize;
@@ -39,7 +39,7 @@ window.onload = function()
         snakee.advance();
         if (snakee.checkCollision())
         {
-            // GAME OVER
+            gameOver();
          
         }
         else
@@ -50,6 +50,24 @@ window.onload = function()
             setTimeout(refreshCanvas,delay);
         }
     }
+    // GAME OVER ---------------------
+    function gameOver()
+    {
+        ctx.save();
+        ctx.fillText("Game Over", 5, 30);
+        ctx.fillText("Appuyez sur Espace pour rejouer", 5, 50);
+        
+        ctx.restore();
+        
+    }
+    
+    function restart()
+    {
+        snakee = new Snake([[6,4],[5,4],[4,4]], "right");
+        applee = new Apple([xCoord,yCoord]);
+        refreshCanvas();
+    }
+    
     // CODAGE REMPLISSAGE CARRE
     function drawBlock(ctx, position)
     {
@@ -160,7 +178,7 @@ function Snake(body,direction)
             var maxY = HeightInBlocks -1;
             var isNotBetweenHorizontalWalls = snakeX < minX || snakeX > maxX;
             var isNotBetweenVerticalWalls = snakeY < minY || snakeY > maxY; 
-            while (isNotBetweenHorizontalWalls || isNotBetweenVerticalWalls)
+            if (isNotBetweenHorizontalWalls || isNotBetweenVerticalWalls)
             {
                 wallCollision = true;
             }
@@ -216,6 +234,9 @@ function Snake(body,direction)
                 case 40:     
                     newDirection = "down"; 
                     break;
+                case 32:     
+                    restart();
+                    return;
                 default:
                      return;
             }
