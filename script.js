@@ -1,3 +1,4 @@
+
 window.onload = function()
 {
     var canvasWidth = 900;
@@ -11,12 +12,14 @@ window.onload = function()
     var HeightInBlocks = canvasHeight/blocSize;
     var xCoord = parseInt(Math.random() * canvasWidth / blocSize) ;
     var yCoord = parseInt(Math.random() * canvasHeight / blocSize) ;
+    
 
         
     init();
     
     function init()
     {
+        
         var canvas = document.createElement('canvas');
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
@@ -39,10 +42,12 @@ window.onload = function()
         snakee.advance();
         snakee.isEatingApple();
         
+        
         if (snakee.checkCollision())
         {
             gameOver();
-         
+            
+            
         }
         else
         {
@@ -57,8 +62,8 @@ window.onload = function()
     {
         ctx.save();
         ctx.fillText("Game Over", 5, 30);
-        ctx.fillText("Appuyez sur Espace pour rejouer", 5, 50);
-        
+        ctx.fillText("Votre score : ", 5, 50);
+        ctx.fillText("Appuyez sur Espace pour rejouer", 5, 70);
         ctx.restore();
         
     }
@@ -69,12 +74,8 @@ window.onload = function()
         applee = new Apple([xCoord,yCoord]);
         refreshCanvas();
     }
-    
-    function score()
-     {
-         var score = 0
-     }   
-        
+              
+           
     
     // CODAGE REMPLISSAGE CARRE
     function drawBlock(ctx, position)
@@ -86,6 +87,7 @@ window.onload = function()
 // SERPENT    ----------------------------------------------------
 function Snake(body,direction)
     {
+        var score = 0;
         this.body = body;
         this.direction = direction;
         //CODAGE DU REMPLISSAGE DU SNAKE + COULEUR--------
@@ -100,12 +102,15 @@ function Snake(body,direction)
             }
             ctx.restore();
         };
+    
+        // INCREMENTATION DU SCORE
+       
         // CODAGE APPLE TO EAT
         this.isEatingApple = function()
         {
             var head = this.body[0];
             var mustEatApple = head[0] == xCoord && head[1] == yCoord;
-           return(mustEatApple);
+            return(mustEatApple);
         };
         // CODAGE DU MOUVEMENT DU SNAKE-------------------
         this.advance = function()
@@ -132,17 +137,21 @@ function Snake(body,direction)
             this.body.unshift(nextPosition);
             if (this.isEatingApple())
             {
-                console.log("on est ds la boucle baby");
+                
                 xCoord = parseInt(Math.random() * canvasWidth / blocSize) ;
                 yCoord = parseInt(Math.random() * canvasHeight / blocSize) ;
                 applee = new Apple([xCoord,yCoord]);
+                
+                score = score +1;
+                console.log("score ingrément : "+ score);
+                console.log("yo les bithices");
                 
             }
             else
             {
                 this.body.pop();
             }
-            console.log("x : "+nextPosition[0]+"y : "+nextPosition[1]);
+            //console.log("x : "+nextPosition[0]+"y : "+nextPosition[1]);
             
         };
         //CODAGE DIRECTION + TEST SAISIE--------------------
