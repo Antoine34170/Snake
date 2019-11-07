@@ -1,4 +1,3 @@
-
 window.onload = function()
 {
     var canvasWidth = 900;
@@ -62,7 +61,7 @@ window.onload = function()
     {
         ctx.save();
         ctx.fillText("Game Over", 5, 30);
-        ctx.fillText("Votre score : ", 5, 50);
+        ctx.fillText("Votre score est", 5, 50);
         ctx.fillText("Appuyez sur Espace pour rejouer", 5, 70);
         ctx.restore();
         
@@ -104,7 +103,8 @@ function Snake(body,direction)
         };
     
         // INCREMENTATION DU SCORE
-       
+        
+               
         // CODAGE APPLE TO EAT
         this.isEatingApple = function()
         {
@@ -141,11 +141,10 @@ function Snake(body,direction)
                 xCoord = parseInt(Math.random() * canvasWidth / blocSize) ;
                 yCoord = parseInt(Math.random() * canvasHeight / blocSize) ;
                 applee = new Apple([xCoord,yCoord]);
+                score += 1;
+                console.log(score);
                 
-                score = score +1;
-                console.log("score ingrément : "+ score);
-                console.log("yo les bithices");
-                
+                                 
             }
             else
             {
@@ -261,5 +260,4 @@ function Snake(body,direction)
             }
         snakee.setDirection(newDirection);
     }
-    
 }
